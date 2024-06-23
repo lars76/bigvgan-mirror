@@ -19,6 +19,8 @@ def bigvgan_base_22khz_80band(progress: bool = True, pretrained: bool = True):
         state_dict = torch.hub.load_state_dict_from_url(url=URLS["bigvgan_base_22khz_80band"], map_location="cpu", progress=progress)
         model.load_state_dict(state_dict)
     model.eval()
+    for param in model.parameters():
+        param.requires_grad = False
 
     return model
 
@@ -31,6 +33,8 @@ def bigvgan_22khz_80band(progress: bool = True, pretrained: bool = True):
         state_dict = torch.hub.load_state_dict_from_url(url=URLS["bigvgan_22khz_80band"], map_location="cpu", progress=progress)
         model.load_state_dict(state_dict)
     model.eval()
+    for param in model.parameters():
+        param.requires_grad = False
 
     return model
 
@@ -43,6 +47,8 @@ def bigvgan_base_24khz_100band(progress: bool = True, pretrained: bool = True):
         state_dict = torch.hub.load_state_dict_from_url(url=URLS["bigvgan_base_24khz_100band"], map_location="cpu", progress=progress)
         model.load_state_dict(state_dict)
     model.eval()
+    for param in model.parameters():
+        param.requires_grad = False
 
     return model
 
@@ -55,5 +61,7 @@ def bigvgan_24khz_100band(progress: bool = True, pretrained: bool = True):
         state_dict = torch.hub.load_state_dict_from_url(url=URLS["bigvgan_24khz_100band"], map_location="cpu", progress=progress)
         model.load_state_dict(state_dict)
     model.eval()
+    for param in model.parameters():
+        param.requires_grad = False
 
     return model

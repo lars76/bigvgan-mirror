@@ -4,9 +4,6 @@ import torch.nn as nn
 import math
 from torch.nn import Conv1d, ConvTranspose1d, Parameter
 
-def get_padding(kernel_size, dilation=1):
-    return int((kernel_size*dilation - dilation)/2)
-
 # This code is adopted from adefossez's julius.lowpass.LowPassFilters under the MIT License
 # https://adefossez.github.io/julius/julius/lowpass.html
 #   LICENSE is in incl_licenses directory.
@@ -116,9 +113,7 @@ class DownSample1d(nn.Module):
                                        kernel_size=self.kernel_size)
 
     def forward(self, x):
-        xx = self.lowpass(x)
-
-        return xx
+        return self.lowpass(x)
 
 class Activation1d(nn.Module):
     def __init__(self,
@@ -161,20 +156,20 @@ class AMPBlock1(torch.nn.Module):
         super(AMPBlock1, self).__init__()
         self.convs1 = nn.ModuleList([
             Conv1d(channels, channels, kernel_size, 1, dilation=dilation[0],
-                               padding=get_padding(kernel_size, dilation[0])),
+                               padding="same"),
             Conv1d(channels, channels, kernel_size, 1, dilation=dilation[1],
-                               padding=get_padding(kernel_size, dilation[1])),
+                               padding="same"),
             Conv1d(channels, channels, kernel_size, 1, dilation=dilation[2],
-                               padding=get_padding(kernel_size, dilation[2]))
+                               padding="same")
         ])
 
         self.convs2 = nn.ModuleList([
             Conv1d(channels, channels, kernel_size, 1, dilation=1,
-                               padding=get_padding(kernel_size, 1)),
+                               padding="same"),
             Conv1d(channels, channels, kernel_size, 1, dilation=1,
-                               padding=get_padding(kernel_size, 1)),
+                               padding="same"),
             Conv1d(channels, channels, kernel_size, 1, dilation=1,
-                               padding=get_padding(kernel_size, 1))
+                               padding="same")
         ])
 
         self.num_layers = len(self.convs1) + len(self.convs2) # total number of conv layers

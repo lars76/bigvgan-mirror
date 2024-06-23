@@ -8,7 +8,7 @@ import torch
 model = torch.hub.load("lars76/bigvgan-mirror", "bigvgan_base_22khz_80band",
 					   trust_repo=True, pretrained=True)
 mel_spectogram = torch.randn(1, 80, 40)
-predicted_wav = model(mel_spectogram) # 1 x 10240
+predicted_wav = model(mel_spectogram) # 1 x 10240 tensor (16-bit integer)
 ```
 
 ## Available models

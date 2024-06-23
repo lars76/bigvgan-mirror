@@ -253,4 +253,4 @@ class BigVGAN(torch.nn.Module):
         x = self.conv_post(x)
         x = torch.tanh(x)
 
-        return x
+        return x.squeeze(1)

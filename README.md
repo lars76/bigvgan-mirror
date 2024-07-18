@@ -65,13 +65,15 @@ This table presents the results of evaluating the PESQ (Perceptual Evaluation of
 | bigvgan_22khz_80band                  | 3.9896 ± 0.2263          | 3.9903 ± 0.2270              |
 | bigvgan_base_24khz_100band            | 3.6254 ± 0.3467          | 3.6300 ± 0.3398              |
 | bigvgan_24khz_100band                 | 4.0109 ± 0.2970          | 4.0123 ± 0.2957              |
-| bigvgan_v2_44khz_128band_512x         | 1.1016 ± 0.0582          | 3.7670 ± 0.3044              |
+| bigvgan_v2_44khz_128band_512x         | 3.7666 ± 0.3043          | 3.7670 ± 0.3044              |
 | bigvgan_v2_44khz_128band_256x         | 3.8612 ± 0.4234          | 3.8614 ± 0.4240              |
 | bigvgan_v2_24khz_100band_256x         | **4.1534 ± 0.3198**      | **4.1535 ± 0.3204**          |
 | bigvgan_v2_22khz_80band_256x          | 3.9525 ± 0.2713          | 3.9525 ± 0.2709              |
 | bigvgan_v2_22khz_80band_fmax8k_256x   | 4.0168 ± 0.2664          | 4.0165 ± 0.2682              |
 
-## Available models
+The difference is <0.01, which proves that the code is correct.
+
+## Model descriptions
 
 | Model                         | Sampling Rate | Mel Band | fmax  | Params | Dataset                       |
 |-------------------------------|---------------|----------|-------|--------|-------------------------------|

@@ -46,7 +46,7 @@ def mel_spectrogram(y, n_fft, num_mels, sampling_rate, hop_size, win_size, fmin,
 model = torch.hub.load("lars76/bigvgan-mirror", "bigvgan_base_22khz_80band",
                        trust_repo=True, pretrained=True)
 
-wav, sr = librosa.load('/path/to/your/audio.wav', sr=22050, mono=True)
+wav, sr = librosa.load('/path/to/your/audio.wav', sr=model.sampling_rate, mono=True)
 mel = torch.FloatTensor(mel_spectrogram(wav, model.n_fft, model.num_mels, model.sampling_rate, model.hop_size, model.win_size, model.fmin, model.fmax)).unsqueeze(0)
 
 with torch.inference_mode():
@@ -59,9 +59,13 @@ You can run `python benchmark.py` to compare the performance between the origina
 
 ## Available models
 
-| Model                        | Sampling Rate | Mel Band | fmax  | Params | Dataset                       |
-|------------------------------|---------------|----------|-------|--------|-------------------------------|
-| bigvgan_24khz_100band        | 24 kHz        | 100      | 12000 | 112M   | LibriTTS                      |
-| bigvgan_base_24khz_100band   | 24 kHz        | 100      | 12000 | 14M    | LibriTTS                      |
-| bigvgan_22khz_80band         | 22 kHz        | 80       | 8000  | 112M   | LibriTTS + VCTK + LJSpeech    |
-| bigvgan_base_22khz_80band    | 22 kHz        | 80       | 8000  | 14M    | LibriTTS + VCTK + LJSpeech    |
+| Model                         | Sampling Rate | Mel Band | fmax  | Params | Dataset                       |
+|-------------------------------|---------------|----------|-------|--------|-------------------------------|
+| bigvgan_24khz_100band         | 24 kHz        | 100      | 12000 | 112M   | LibriTTS                      |
+| bigvgan_base_24khz_100band    | 24 kHz        | 100      | 12000 | 14M    | LibriTTS                      |
+| bigvgan_22khz_80band          | 22 kHz        | 80       | 8000  | 112M   | LibriTTS + VCTK + LJSpeech    |
+| bigvgan_base_22khz_80band     | 22 kHz        | 80       | 8000  | 14M    | LibriTTS + VCTK + LJSpeech    |
+| bigvgan_v2_44khz_128band_512x | 44 kHz        | 128      | 22050 | 122M   | Large-scale Compilation       |
+| bigvgan_v2_44khz_128band_256x | 44 kHz        | 128      | 22050 | 112M   | Large-scale Compilation       |
+| bigvgan_v2_24khz_100band_256x | 24 kHz        | 100      | 12000 | 112M   | Large-scale Compilation       |
+| bigvgan_v2_22khz_80band_256x  | 22 kHz        | 80       | 11025 | 112M   | Large-scale Compilation       |

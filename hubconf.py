@@ -1,7 +1,7 @@
 dependencies = ["torch"]
 
 import torch
-from bigvgan import BigVGAN
+from bigvgan_mirror import BigVGAN
 
 URLS = {
     "bigvgan_base_22khz_80band": "https://github.com/lars76/bigvgan-mirror/releases/download/weights-v1.0/bigvgan_base_22khz_80band.pt",

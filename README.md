@@ -39,8 +39,13 @@ mel_spectogram = torch.FloatTensor(mel_spectrogram(wav)).unsqueeze(0)
 
 model = torch.hub.load("lars76/bigvgan-mirror", "bigvgan_base_22khz_80band",
 					   trust_repo=True, pretrained=True)
-predicted_wav = model(mel_spectogram) # 1 x T tensor (16-bit integer)
+with torch.inference_mode():
+    predicted_wav = model(mel_spectogram) # 1 x T tensor (16-bit integer)
 ```
+
+## Benchmark
+
+You can run `python benchmark.py` to compare the performance between the original code and this one.
 
 ## Available models
 

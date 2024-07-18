@@ -61,7 +61,7 @@ def mel_spectrogram(
 
 def ours(files):
     model = torch.hub.load(
-        "/home/lars/webapp/new_repo/bigvgan-mirror/bigvgan-mirror",
+        "lars76/bigvgan-mirror",
         MODEL_NAME,
         trust_repo=True,
         pretrained=True,

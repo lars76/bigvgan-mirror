@@ -2,6 +2,10 @@
 
 A mirror of BigVGAN for access via PyTorch Hub. There are no dependencies other than PyTorch. I cleaned up the original code from [NVIDIA](https://github.com/NVIDIA/BigVGAN.git). The weights here are for prediction. If you want to train BigVGAN, you also need the discriminator and have to add weight_norm to the generator.
 
+## Example Usage
+
+Below is an example demonstrating how to generate a mel spectrogram from an audio file and use BigVGAN to synthesize audio from it.
+
 ```python
 import torch
 import librosa
@@ -40,9 +44,9 @@ predicted_wav = model(mel_spectogram) # 1 x T tensor (16-bit integer)
 
 ## Available models
 
-|Model|Sampling Rate|Mel band|fmax|Params.|Dataset|
-|------|---|---|---|---|------|---|
-|bigvgan_24khz_100band|24 kHz|100|12000|112M|LibriTTS|
-|bigvgan_base_24khz_100band|24 kHz|100|12000|14M|LibriTTS|
-|bigvgan_22khz_80band|22 kHz|80|8000|112M|LibriTTS + VCTK + LJSpeech|
-|bigvgan_base_22khz_80band|22 kHz|80|8000|14M|LibriTTS + VCTK + LJSpeech|
+| Model                        | Sampling Rate | Mel Band | fmax  | Params | Dataset                       |
+|------------------------------|---------------|----------|-------|--------|-------------------------------|
+| bigvgan_24khz_100band        | 24 kHz        | 100      | 12000 | 112M   | LibriTTS                      |
+| bigvgan_base_24khz_100band   | 24 kHz        | 100      | 12000 | 14M    | LibriTTS                      |
+| bigvgan_22khz_80band         | 22 kHz        | 80       | 8000  | 112M   | LibriTTS + VCTK + LJSpeech    |
+| bigvgan_base_22khz_80band    | 22 kHz        | 80       | 8000  | 14M    | LibriTTS + VCTK + LJSpeech    |

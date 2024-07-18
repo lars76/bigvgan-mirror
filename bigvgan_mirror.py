@@ -184,9 +184,29 @@ class AMPBlock1(nn.Module):
 
 class BigVGAN(nn.Module):
     def __init__(
-        self, upsample_rates, upsample_initial_channel, upsample_kernel_sizes, mels
+        self,
+        upsample_rates,
+        upsample_initial_channel,
+        upsample_kernel_sizes,
+        mels,
+        n_fft,
+        hop_size,
+        win_size,
+        sampling_rate,
+        fmin,
+        fmax,
+        add_bias=False,
+        add_tanh=False,
     ):
         super().__init__()
+
+        self.n_fft = n_fft
+        self.hop_size = hop_size
+        self.win_size = win_size
+        self.sampling_rate = sampling_rate
+        self.fmin = fmin
+        self.fmax = fmax
+
         self.num_upsamples = len(upsample_rates)
         self.num_kernels = 3
         self.num_mels = mels
@@ -216,7 +236,8 @@ class BigVGAN(nn.Module):
                 self.resblocks.append(AMPBlock1(ch, k, [1, 3, 5]))
 
         self.activation_post = Activation1d(activation=SnakeBeta(ch))
-        self.conv_post = nn.Conv1d(ch, 1, 7, 1, padding=3)
+        self.conv_post = nn.Conv1d(ch, 1, 7, 1, padding=3, bias=add_bias)
+        self.add_tanh = add_tanh
 
     def forward(self, x):
         x = self.conv_pre(x)
@@ -230,6 +251,9 @@ class BigVGAN(nn.Module):
 
         x = self.activation_post(x)
         x = self.conv_post(x)
-        x = torch.tanh(x)
+        if self.add_tanh:
+            x = torch.tanh(x)
+        else:
+            x = torch.clamp(x, min=-1.0, max=1.0)
 
         return (x.squeeze(1) * 32767).short()

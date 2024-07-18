@@ -11,36 +11,46 @@ import torch
 import librosa
 import numpy as np
 
-def mel_spectrogram(y, n_fft=1024, num_mels=80, sampling_rate=22050, hop_size=256, win_size=1024, fmin=0, fmax=8000, center=False):
+def mel_spectrogram(y, n_fft, num_mels, sampling_rate, hop_size, win_size, fmin, fmax):
     # Create mel filterbank
-    mel_basis = librosa.filters.mel(sr=sampling_rate, n_fft=n_fft, n_mels=num_mels, fmin=fmin, fmax=fmax)
-    
+    mel_basis = librosa.filters.mel(
+        sr=sampling_rate, n_fft=n_fft, n_mels=num_mels, fmin=fmin, fmax=fmax
+    )
+
     # Pad the signal
     pad_length = int((n_fft - hop_size) / 2)
-    y = np.pad(y, (pad_length, pad_length), mode='reflect')
-    
+    y = np.pad(y, (pad_length, pad_length), mode="reflect")
+
     # Compute STFT
-    D = librosa.stft(y, n_fft=n_fft, hop_length=hop_size, win_length=win_size, 
-                     window='hann', center=center, pad_mode='reflect')
-    
+    D = librosa.stft(
+        y,
+        n_fft=n_fft,
+        hop_length=hop_size,
+        win_length=win_size,
+        window="hann",
+        center=False,
+        pad_mode="reflect",
+    )
+
     # Convert to magnitude spectrogram and add small epsilon
-    S = np.sqrt(np.abs(D)**2 + 1e-9)
-    
+    S = np.sqrt(np.abs(D) ** 2 + 1e-9)
+
     # Apply mel filterbank
     S = np.dot(mel_basis, S)
-    
+
     # Convert to log scale
     S = np.log(np.maximum(S, 1e-5))
-    
+
     return S
 
-wav, sr = librosa.load('/path/to/your/audio.wav', sr=22050, mono=True)
-mel_spectogram = torch.FloatTensor(mel_spectrogram(wav)).unsqueeze(0)
-
 model = torch.hub.load("lars76/bigvgan-mirror", "bigvgan_base_22khz_80band",
-					   trust_repo=True, pretrained=True)
+                       trust_repo=True, pretrained=True)
+
+wav, sr = librosa.load('/path/to/your/audio.wav', sr=22050, mono=True)
+mel = torch.FloatTensor(mel_spectrogram(wav, model.n_fft, model.num_mels, model.sampling_rate, model.hop_size, model.win_size, model.fmin, model.fmax)).unsqueeze(0)
+
 with torch.inference_mode():
-    predicted_wav = model(mel_spectogram) # 1 x T tensor (16-bit integer)
+    predicted_wav = model(mel) # 1 x T tensor (16-bit integer)
 ```
 
 ## Benchmark

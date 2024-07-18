@@ -16,17 +16,7 @@ MAX_FILES = 20
 MODEL_NAME = "bigvgan_base_22khz_80band"
 
 
-def mel_spectrogram(
-    y,
-    n_fft=1024,
-    num_mels=80,
-    sampling_rate=22050,
-    hop_size=256,
-    win_size=1024,
-    fmin=0,
-    fmax=8000,
-    center=False,
-):
+def mel_spectrogram(y, n_fft, num_mels, sampling_rate, hop_size, win_size, fmin, fmax):
     # Create mel filterbank
     mel_basis = librosa.filters.mel(
         sr=sampling_rate, n_fft=n_fft, n_mels=num_mels, fmin=fmin, fmax=fmax
@@ -43,7 +33,7 @@ def mel_spectrogram(
         hop_length=hop_size,
         win_length=win_size,
         window="hann",
-        center=center,
+        center=False,
         pad_mode="reflect",
     )
 
@@ -63,16 +53,28 @@ def ours(files):
     model = torch.hub.load(
         "lars76/bigvgan-mirror",
         MODEL_NAME,
+        source="github",
         trust_repo=True,
         pretrained=True,
     )
     pesq_score = []
     for filename in tqdm(files):
-        orig_wav, sr = librosa.load(filename, sr=22050, mono=True)
-        mel_spectogram = torch.FloatTensor(mel_spectrogram(orig_wav)).unsqueeze(0)
+        orig_wav, sr = librosa.load(filename, sr=model.sampling_rate, mono=True)
+        mel = torch.FloatTensor(
+            mel_spectrogram(
+                orig_wav,
+                model.n_fft,
+                model.num_mels,
+                model.sampling_rate,
+                model.hop_size,
+                model.win_size,
+                model.fmin,
+                model.fmax,
+            )
+        ).unsqueeze(0)
 
         with torch.inference_mode():
-            predicted_wav = model(mel_spectogram).squeeze(0).numpy()
+            predicted_wav = model(mel).squeeze(0).numpy()
 
         predicted_wav = librosa.resample(
             predicted_wav / 32767, orig_sr=sr, target_sr=16000

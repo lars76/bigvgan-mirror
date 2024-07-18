@@ -37,7 +37,7 @@ MODEL_CONFIGS = {
         "model_params": {
             "upsample_rates": [4, 4, 2, 2, 2, 2],
             "upsample_initial_channel": 1536,
-            "upsample_kernel_sizes": [8, 8, 4, 4, 4, 4],
+            "upsample_kernel_sizes": [16, 8, 4, 4, 4, 4],
             "mels": 128,
             "add_bias": False,
             "add_tanh": False,

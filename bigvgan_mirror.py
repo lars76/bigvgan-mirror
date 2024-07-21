@@ -256,4 +256,4 @@ class BigVGAN(nn.Module):
         else:
             x = torch.clamp(x, min=-1.0, max=1.0)
 
-        return (x.squeeze(1) * 32767).short()
+        return x.squeeze(1)

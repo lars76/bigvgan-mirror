@@ -15,7 +15,6 @@ from hubconf import URLS
 WAV_DATASET_PATH = Path("../dataset").rglob("*.wav")
 MAX_FILES = 20
 
-
 def mel_spectrogram(y, n_fft, num_mels, sampling_rate, hop_size, win_size, fmin, fmax):
     mel_basis = librosa.filters.mel(
         sr=sampling_rate, n_fft=n_fft, n_mels=num_mels, fmin=fmin, fmax=fmax
@@ -40,7 +39,6 @@ def calculate_pesq(orig_wav, predicted_wav, sr):
     orig_wav = librosa.resample(orig_wav, orig_sr=sr, target_sr=16000)
     predicted_wav = librosa.resample(predicted_wav, orig_sr=sr, target_sr=16000)
     return pesq(16000, orig_wav, predicted_wav, "wb")
-
 
 def ours(files, model_name):
     model = torch.hub.load(
@@ -67,9 +65,8 @@ def ours(files, model_name):
         ).unsqueeze(0)
         with torch.inference_mode():
             predicted_wav = model(mel).squeeze(0).numpy()
-        pesq_scores.append(calculate_pesq(orig_wav, predicted_wav / 32767, sr))
+        pesq_scores.append(calculate_pesq(orig_wav, predicted_wav, sr))
     return np.mean(pesq_scores), np.std(pesq_scores)
-
 
 def original(files, model_name):
     model = bigvgan.BigVGAN.from_pretrained(
@@ -88,7 +85,6 @@ def original(files, model_name):
         pesq_scores.append(calculate_pesq(orig_wav, predicted_wav, sr))
     return np.mean(pesq_scores), np.std(pesq_scores)
 
-
 def main():
     files = sorted(list(WAV_DATASET_PATH))[:MAX_FILES]
     for model_name in URLS.keys():
@@ -98,7 +94,6 @@ def main():
         print(f"Ours: {our_mean:.4f} ± {our_std:.4f}")
         print(f"Original: {orig_mean:.4f} ± {orig_std:.4f}")
         print()
-
 
 if __name__ == "__main__":
     main()

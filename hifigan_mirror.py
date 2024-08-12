@@ -161,4 +161,4 @@ class HifiGAN(nn.Module):
             x = xs / self.num_kernels
         x = self.lrelu(x)
         x = self.conv_post(x)
-        return self.tanh(x)
+        return self.tanh(x).squeeze(1)

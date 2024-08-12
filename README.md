@@ -1,6 +1,6 @@
 # bigvgan-mirror
 
-A mirror of BigVGAN for access via PyTorch Hub. There are no dependencies other than PyTorch. I cleaned up the original code from [NVIDIA](https://github.com/NVIDIA/BigVGAN.git). The weights here are for prediction. If you want to train BigVGAN, you also need the discriminator and have to add weight_norm to the generator.
+A mirror of BigVGAN and HiFi-GAN for access via PyTorch Hub. There are no dependencies other than PyTorch. I cleaned up the original code from [NVIDIA](https://github.com/NVIDIA/BigVGAN.git) and [HiFi-GAN](https://github.com/jik876/hifi-gan/). The weights here are for prediction. If you want to train BigVGAN/HiFi-GAN, you also need the discriminator and have to add weight_norm to the generator.
 
 ## Example Usage
 

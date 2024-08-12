@@ -66,6 +66,16 @@ wavfile.write("output.wav", model.sampling_rate, predicted_wav)
 | bigvgan_v2_22khz_80band_fmax8k_256x| 80   | 1024  | 256      | 1024     | 22050         | 0    | 8000 | 112M   | Large-scale Compilation     |
 | bigvgan_base_22khz_80band          | 80   | 1024  | 256      | 1024     | 22050         | 0    | 8000 | 14M    | LibriTTS + VCTK + LJSpeech  |
 | bigvgan_22khz_80band               | 80   | 1024  | 256      | 1024     | 22050         | 0    | 8000 | 112M   | LibriTTS + VCTK + LJSpeech  |
+| hifigan_universal_v1 | 80   | 1024  | 256      | 1024     | 22050         | 0    | 8000 | 14M   | Universal     |
+| hifigan_vctk_v1 | 80   | 1024  | 256      | 1024     | 22050         | 0    | 8000 | 14M   | VCTK     |
+| hifigan_vctk_v2 | 80   | 1024  | 256      | 1024     | 22050         | 0    | 8000 | 9.26M   | VCTK     |
+| hifigan_vctk_v3 | 80   | 1024  | 256      | 1024     | 22050         | 0    | 8000 | 1.46M   | VCTK     |
+| hifigan_lj_v1 | 80   | 1024  | 256      | 1024     | 22050         | 0    | 8000 | 14M   | LJSpeech     |
+| hifigan_lj_v2 | 80   | 1024  | 256      | 1024     | 22050         | 0    | 8000 | 9.26M   | LJSpeech     |
+| hifigan_lj_v3 | 80   | 1024  | 256      | 1024     | 22050         | 0    | 8000 | 1.46M   | LJSpeech     |
+| hifigan_lj_ft_t2_v1 | 80   | 1024  | 256      | 1024     | 22050         | 0    | 8000 | 14M   | LJSpeech + Finetuned     |
+| hifigan_lj_ft_t2_v2 | 80   | 1024  | 256      | 1024     | 22050         | 0    | 8000 | 9.26M   | LJSpeech + Finetuned    |
+| hifigan_lj_ft_t2_v3 | 80   | 1024  | 256      | 1024     | 22050         | 0    | 8000 | 1.46M   | LJSpeech + Finetuned    |
 
 Since `bigvgan_v2_22khz_80band_fmax8k_256x` was also trained with non-speech data, I found that `bigvgan_base_22khz_80band` and `bigvgan_22khz_80band` are much better suited for use in text-to-speech systems such as FastSpeech2. In addition, `bigvgan_base_22khz_80band` also seems to be better than `bigvgan_22khz_80band`.
 

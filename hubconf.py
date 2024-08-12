@@ -1,6 +1,7 @@
 dependencies = ["torch"]
 import torch
 from bigvgan_mirror import BigVGAN
+from hifigan_mirror import HifiGAN
 
 URLS = {
     "bigvgan_base_22khz_80band": "https://github.com/lars76/bigvgan-mirror/releases/download/weights-v1.0/bigvgan_base_22khz_80band.pt",
@@ -12,11 +13,24 @@ URLS = {
     "bigvgan_v2_24khz_100band_256x": "https://github.com/lars76/bigvgan-mirror/releases/download/weights-v2.0/bigvgan_v2_24khz_100band_256x.pt",
     "bigvgan_v2_22khz_80band_256x": "https://github.com/lars76/bigvgan-mirror/releases/download/weights-v2.0/bigvgan_v2_22khz_80band_256x.pt",
     "bigvgan_v2_22khz_80band_fmax8k_256x": "https://github.com/lars76/bigvgan-mirror/releases/download/weights-v2.0/bigvgan_v2_22khz_80band_fmax8k_256x.pt",
+    "hifigan_universal_v1": "https://github.com/lars76/bigvgan-mirror/releases/download/weights-hifigan/hifigan_universal_v1.pt",
+    "hifigan_vctk_v1": "https://github.com/lars76/bigvgan-mirror/releases/download/weights-hifigan/hifigan_vctk_v1.pt",
+    "hifigan_vctk_v2": "https://github.com/lars76/bigvgan-mirror/releases/download/weights-hifigan/hifigan_vctk_v2.pt",
+    "hifigan_vctk_v3": "https://github.com/lars76/bigvgan-mirror/releases/download/weights-hifigan/hifigan_vctk_v3.pt",
+    "hifigan_lj_v1": "https://github.com/lars76/bigvgan-mirror/releases/download/weights-hifigan/hifigan_lj_v1.pt",
+    "hifigan_lj_v2": "https://github.com/lars76/bigvgan-mirror/releases/download/weights-hifigan/hifigan_lj_v2.pt",
+    "hifigan_lj_v3": "https://github.com/lars76/bigvgan-mirror/releases/download/weights-hifigan/hifigan_lj_v3.pt",
+    "hifigan_ft_t2_v1": "https://github.com/lars76/bigvgan-mirror/releases/download/weights-hifigan/hifigan_ft_t2_v1.pt",
+    "hifigan_ft_t2_v2": "https://github.com/lars76/bigvgan-mirror/releases/download/weights-hifigan/hifigan_ft_t2_v2.pt",
+    "hifigan_ft_t2_v3": "https://github.com/lars76/bigvgan-mirror/releases/download/weights-hifigan/hifigan_ft_t2_v3.pt",
 }
 
 
-def create_bigvgan_model(config, pretrained=True, progress=True):
-    model = BigVGAN(**config["model_params"])
+def create_model(config, pretrained=True, progress=True):
+    if config["model_name"].startswith("bigvgan"):
+        model = BigVGAN(**config["model_params"])
+    else:
+        model = HifiGAN(**config["model_params"])
 
     if pretrained:
         state_dict = torch.hub.load_state_dict_from_url(
@@ -185,11 +199,191 @@ MODEL_CONFIGS = {
             "fmax": 12000,
         },
     },
+    "hifigan_universal_v1": {
+        "model_name": "hifigan_universal_v1",
+        "model_params": {
+            "resblock_type": 1,
+            "upsample_rates": [8, 8, 2, 2],
+            "upsample_initial_channel": 512,
+            "upsample_kernel_sizes": [16, 16, 4, 4],
+            "resblock_kernel_sizes": [3,7,11],
+            "resblock_dilation_sizes": [[1,3,5], [1,3,5], [1,3,5]],
+            "mels": 80,
+            "n_fft": 1024,
+            "hop_size": 256,
+            "win_size": 1024,
+            "sampling_rate": 22050,
+            "fmin": 0,
+            "fmax": 8000,
+        },
+    },
+    "hifigan_vctk_v1": {
+        "model_name": "hifigan_vctk_v1",
+        "model_params": {
+            "resblock_type": 1,
+            "upsample_rates": [8, 8, 2, 2],
+            "upsample_initial_channel": 512,
+            "upsample_kernel_sizes": [16, 16, 4, 4],
+            "resblock_kernel_sizes": [3,7,11],
+            "resblock_dilation_sizes": [[1,3,5], [1,3,5], [1,3,5]],
+            "mels": 80,
+            "n_fft": 1024,
+            "hop_size": 256,
+            "win_size": 1024,
+            "sampling_rate": 22050,
+            "fmin": 0,
+            "fmax": 8000,
+        },
+    },
+    "hifigan_vctk_v2": {
+        "model_name": "hifigan_vctk_v2",
+        "model_params": {
+            "resblock_type": 1,
+            "upsample_rates": [8, 8, 2, 2],
+            "upsample_initial_channel": 128,
+            "upsample_kernel_sizes": [16, 16, 4, 4],
+            "resblock_kernel_sizes": [3,7,11],
+            "resblock_dilation_sizes": [[1,3,5], [1,3,5], [1,3,5]],
+            "mels": 80,
+            "n_fft": 1024,
+            "hop_size": 256,
+            "win_size": 1024,
+            "sampling_rate": 22050,
+            "fmin": 0,
+            "fmax": 8000,
+        },
+    },
+    "hifigan_vctk_v3": {
+        "model_name": "hifigan_vctk_v3",
+        "model_params": {
+            "resblock_type": 2,
+            "upsample_rates": [8, 8, 4],
+            "upsample_initial_channel": 256,
+            "upsample_kernel_sizes": [16, 16, 8],
+            "resblock_kernel_sizes": [3,5,7],
+            "resblock_dilation_sizes": [[1,2], [2,6], [3,12]],
+            "mels": 80,
+            "n_fft": 1024,
+            "hop_size": 256,
+            "win_size": 1024,
+            "sampling_rate": 22050,
+            "fmin": 0,
+            "fmax": 8000,
+        },
+    },
+    "hifigan_lj_v1": {
+        "model_name": "hifigan_lj_v1",
+        "model_params": {
+            "resblock_type": 1,
+            "upsample_rates": [8, 8, 2, 2],
+            "upsample_initial_channel": 512,
+            "upsample_kernel_sizes": [16, 16, 4, 4],
+            "resblock_kernel_sizes": [3,7,11],
+            "resblock_dilation_sizes": [[1,3,5], [1,3,5], [1,3,5]],
+            "mels": 80,
+            "n_fft": 1024,
+            "hop_size": 256,
+            "win_size": 1024,
+            "sampling_rate": 22050,
+            "fmin": 0,
+            "fmax": 8000,
+        },
+    },
+    "hifigan_lj_v2": {
+        "model_name": "hifigan_lj_v2",
+        "model_params": {
+            "resblock_type": 1,
+            "upsample_rates": [8, 8, 2, 2],
+            "upsample_initial_channel": 128,
+            "upsample_kernel_sizes": [16, 16, 4, 4],
+            "resblock_kernel_sizes": [3,7,11],
+            "resblock_dilation_sizes": [[1,3,5], [1,3,5], [1,3,5]],
+            "mels": 80,
+            "n_fft": 1024,
+            "hop_size": 256,
+            "win_size": 1024,
+            "sampling_rate": 22050,
+            "fmin": 0,
+            "fmax": 8000,
+        },
+    },
+    "hifigan_lj_v3": {
+        "model_name": "hifigan_lj_v3",
+        "model_params": {
+            "resblock_type": 2,
+            "upsample_rates": [8, 8, 4],
+            "upsample_initial_channel": 256,
+            "upsample_kernel_sizes": [16, 16, 8],
+            "resblock_kernel_sizes": [3,5,7],
+            "resblock_dilation_sizes": [[1,2], [2,6], [3,12]],
+            "mels": 80,
+            "n_fft": 1024,
+            "hop_size": 256,
+            "win_size": 1024,
+            "sampling_rate": 22050,
+            "fmin": 0,
+            "fmax": 8000,
+        },
+    },
+    "hifigan_lj_ft_t2_v1": {
+        "model_name": "hifigan_lj_ft_t2_v1",
+        "model_params": {
+            "resblock_type": 1,
+            "upsample_rates": [8, 8, 2, 2],
+            "upsample_initial_channel": 512,
+            "upsample_kernel_sizes": [16, 16, 4, 4],
+            "resblock_kernel_sizes": [3,7,11],
+            "resblock_dilation_sizes": [[1,3,5], [1,3,5], [1,3,5]],
+            "mels": 80,
+            "n_fft": 1024,
+            "hop_size": 256,
+            "win_size": 1024,
+            "sampling_rate": 22050,
+            "fmin": 0,
+            "fmax": 8000,
+        },
+    },
+    "hifigan_lj_ft_t2_v2": {
+        "model_name": "hifigan_lj_ft_t2_v2",
+        "model_params": {
+            "resblock_type": 1,
+            "upsample_rates": [8, 8, 2, 2],
+            "upsample_initial_channel": 128,
+            "upsample_kernel_sizes": [16, 16, 4, 4],
+            "resblock_kernel_sizes": [3,7,11],
+            "resblock_dilation_sizes": [[1,3,5], [1,3,5], [1,3,5]],
+            "mels": 80,
+            "n_fft": 1024,
+            "hop_size": 256,
+            "win_size": 1024,
+            "sampling_rate": 22050,
+            "fmin": 0,
+            "fmax": 8000,
+        },
+    },
+    "hifigan_lj_ft_t2_v3": {
+        "model_name": "hifigan_lj_ft_t2_v3",
+        "model_params": {
+            "resblock_type": 2,
+            "upsample_rates": [8, 8, 4],
+            "upsample_initial_channel": 256,
+            "upsample_kernel_sizes": [16, 16, 8],
+            "resblock_kernel_sizes": [3,5,7],
+            "resblock_dilation_sizes": [[1,2], [2,6], [3,12]],
+            "mels": 80,
+            "n_fft": 1024,
+            "hop_size": 256,
+            "win_size": 1024,
+            "sampling_rate": 22050,
+            "fmin": 0,
+            "fmax": 8000,
+        },
+    },
 }
 
 # Create individual functions for each model
 for model_name in MODEL_CONFIGS:
     exec(f"""
 def {model_name}(progress: bool = True, pretrained: bool = True):
-    return create_bigvgan_model(MODEL_CONFIGS['{model_name}'], pretrained, progress)
+    return create_model(MODEL_CONFIGS['{model_name}'], pretrained, progress)
     """)

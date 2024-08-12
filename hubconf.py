@@ -20,9 +20,9 @@ URLS = {
     "hifigan_lj_v1": "https://github.com/lars76/bigvgan-mirror/releases/download/weights-hifigan/hifigan_lj_v1.pt",
     "hifigan_lj_v2": "https://github.com/lars76/bigvgan-mirror/releases/download/weights-hifigan/hifigan_lj_v2.pt",
     "hifigan_lj_v3": "https://github.com/lars76/bigvgan-mirror/releases/download/weights-hifigan/hifigan_lj_v3.pt",
-    "hifigan_ft_t2_v1": "https://github.com/lars76/bigvgan-mirror/releases/download/weights-hifigan/hifigan_ft_t2_v1.pt",
-    "hifigan_ft_t2_v2": "https://github.com/lars76/bigvgan-mirror/releases/download/weights-hifigan/hifigan_ft_t2_v2.pt",
-    "hifigan_ft_t2_v3": "https://github.com/lars76/bigvgan-mirror/releases/download/weights-hifigan/hifigan_ft_t2_v3.pt",
+    "hifigan_lj_ft_t2_v1": "https://github.com/lars76/bigvgan-mirror/releases/download/weights-hifigan/hifigan_lj_ft_t2_v1.pt",
+    "hifigan_lj_ft_t2_v2": "https://github.com/lars76/bigvgan-mirror/releases/download/weights-hifigan/hifigan_lj_ft_t2_v2.pt",
+    "hifigan_lj_ft_t2_v3": "https://github.com/lars76/bigvgan-mirror/releases/download/weights-hifigan/hifigan_lj_ft_t2_v3.pt",
 }
 
 

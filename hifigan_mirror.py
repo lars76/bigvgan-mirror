@@ -121,7 +121,7 @@ class HifiGAN(nn.Module):
         self.num_kernels = len(resblock_kernel_sizes)
         self.num_mels = mels
 
-        self.conv_pre = Conv1d(mels, upsample_initial_channel, 7, 1, padding=3)
+        self.conv_pre = Conv1d(mels, upsample_initial_channel, 7, 1, padding="same")
         resblock = ResBlock1 if resblock_type == 1 else ResBlock2
 
         self.ups = nn.ModuleList(
@@ -146,7 +146,7 @@ class HifiGAN(nn.Module):
         )
 
         self.conv_post = Conv1d(
-            upsample_initial_channel // (2**self.num_upsamples), 1, 7, 1, padding=3
+            upsample_initial_channel // (2**self.num_upsamples), 1, 7, 1, padding="same"
         )
         self.lrelu = nn.LeakyReLU(0.1, inplace=False)
         self.lrelu2 = nn.LeakyReLU(0.01, inplace=False)

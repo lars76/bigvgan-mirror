@@ -2,6 +2,10 @@ import torch.nn as nn
 from torch.nn import Conv1d, ConvTranspose1d
 
 
+def get_padding(kernel_size, dilation=1):
+    return int((kernel_size * dilation - dilation) / 2)
+
+
 class ResBlock1(nn.Module):
     def __init__(self, channels, kernel_size=3, dilation=(1, 3, 5)):
         super(ResBlock1, self).__init__()
@@ -13,7 +17,7 @@ class ResBlock1(nn.Module):
                     kernel_size,
                     1,
                     dilation=dilation[0],
-                    padding="same",
+                    padding=get_padding(kernel_size, dilation[0]),
                 ),
                 Conv1d(
                     channels,
@@ -21,7 +25,7 @@ class ResBlock1(nn.Module):
                     kernel_size,
                     1,
                     dilation=dilation[1],
-                    padding="same",
+                    padding=get_padding(kernel_size, dilation[1]),
                 ),
                 Conv1d(
                     channels,
@@ -29,7 +33,7 @@ class ResBlock1(nn.Module):
                     kernel_size,
                     1,
                     dilation=dilation[2],
-                    padding="same",
+                    padding=get_padding(kernel_size, dilation[2]),
                 ),
             ]
         )
@@ -64,7 +68,7 @@ class ResBlock2(nn.Module):
                     channels,
                     kernel_size,
                     1,
-                    dilation=dilation[0],
+                    dilation=get_padding(kernel_size, dilation[0]),
                     padding="same",
                 ),
                 Conv1d(
@@ -72,7 +76,7 @@ class ResBlock2(nn.Module):
                     channels,
                     kernel_size,
                     1,
-                    dilation=dilation[1],
+                    dilation=get_padding(kernel_size, dilation[1]),
                     padding="same",
                 ),
             ]

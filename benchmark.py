@@ -9,6 +9,12 @@ from pathlib import Path
 sys.path.insert(1, "BigVGAN")
 import bigvgan
 from meldataset import get_mel_spectrogram
+
+sys.path.insert(1, "hifi-gan")
+import json
+from env import AttrDict
+from models import Generator
+
 from hubconf import URLS
 
 WAV_DATASET_PATH = Path("../dataset").rglob("*.wav")
@@ -71,9 +77,36 @@ def ours(files, model_name):
 
 
 def original(files, model_name):
-    model = bigvgan.BigVGAN.from_pretrained(
-        f"nvidia/{model_name}", use_cuda_kernel=False
-    )
+    if "hifigan" in model_name:
+        if "v1" in model_name:
+            config = "hifi-gan/config_v1.json"
+        elif "v2" in model_name:
+            config = "hifi-gan/config_v2.json"
+        else:
+            config = "hifi-gan/config_v3.json"
+        with open(config) as f:
+            data = f.read()
+        json_config = json.loads(data)
+        h = AttrDict(json_config)
+        model = Generator(h)
+        if "lj_ft_t2_v2" in model_name:
+            model.load_state_dict(
+                torch.load("hifi-gan/generator_v2", map_location="cpu")["generator"]
+            )
+        elif "lj_ft_t2_v3" in model_name:
+            model.load_state_dict(
+                torch.load("hifi-gan/generator_v3", map_location="cpu")["generator"]
+            )
+        elif "universal" in model_name:
+            model.load_state_dict(
+                torch.load("hifi-gan/g_02500000", map_location="cpu")["generator"]
+            )
+        else:
+            return -1, -1
+    else:
+        model = bigvgan.BigVGAN.from_pretrained(
+            f"nvidia/{model_name}", use_cuda_kernel=False
+        )
     model.remove_weight_norm()
     model = model.eval()
     pesq_scores = []

@@ -42,7 +42,7 @@ class ResBlock1(nn.Module):
             ]
         )
 
-        self.lrelu = nn.LeakyReLU(0.1, inplace=True)
+        self.lrelu = nn.LeakyReLU(0.1, inplace=False)
 
     def forward(self, x):
         for c1, c2 in zip(self.convs1, self.convs2):
@@ -77,7 +77,7 @@ class ResBlock2(nn.Module):
                 ),
             ]
         )
-        self.lrelu = nn.LeakyReLU(0.1, inplace=True)
+        self.lrelu = nn.LeakyReLU(0.1, inplace=False)
 
     def forward(self, x):
         for c in self.convs:
@@ -144,7 +144,8 @@ class HifiGAN(nn.Module):
         self.conv_post = Conv1d(
             upsample_initial_channel // (2**self.num_upsamples), 1, 7, 1, padding=3
         )
-        self.lrelu = nn.LeakyReLU(0.1, inplace=True)
+        self.lrelu = nn.LeakyReLU(0.1, inplace=False)
+        self.lrelu2 = nn.LeakyReLU(0.01, inplace=False)
         self.tanh = nn.Tanh()
 
     def forward(self, x):
@@ -159,6 +160,6 @@ class HifiGAN(nn.Module):
                 else:
                     xs += self.resblocks[i * self.num_kernels + j](x)
             x = xs / self.num_kernels
-        x = self.lrelu(x)
+        x = self.lrelu2(x)
         x = self.conv_post(x)
         return self.tanh(x).squeeze(1)

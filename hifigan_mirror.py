@@ -68,16 +68,16 @@ class ResBlock2(nn.Module):
                     channels,
                     kernel_size,
                     1,
-                    dilation=get_padding(kernel_size, dilation[0]),
-                    padding="same",
+                    dilation=dilation[0],
+                    padding=get_padding(kernel_size, dilation[0]),
                 ),
                 Conv1d(
                     channels,
                     channels,
                     kernel_size,
                     1,
-                    dilation=get_padding(kernel_size, dilation[1]),
-                    padding="same",
+                    dilation=dilation[1],
+                    padding=get_padding(kernel_size, dilation[1]),
                 ),
             ]
         )
